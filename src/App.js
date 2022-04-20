@@ -29,14 +29,22 @@ function App() {
 
       <ul>
         {list.map(function(item){
-          return <li key={item.objectID}>{item.title}</li>
+          return (
+            <li key={item.objectID}>
+              <span>
+                <a href={item.url}>{item.title}</a>
+              </span>
+              <span>{item.author}</span>
+              <span>{item.points}</span>
+              <span>{item.num_comments}</span>
+            </li>
+          );
         })}
       </ul>
-
     </div> 
   );
 }
 
 export default App;
 
-// page: 21
+// page: 29
