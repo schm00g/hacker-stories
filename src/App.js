@@ -29,7 +29,7 @@ function App() {
 
       <ul>
         {list.map(function(item){
-          return <li>{item.title}</li>
+          return <li key={item.objectID}>{item.title}</li>
         })}
       </ul>
 
