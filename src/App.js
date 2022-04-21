@@ -17,7 +17,7 @@ const list = [
     objectID: 1,
 }, ];
 
-function App() {
+const App = () => {
   return (
     <div>
       <h1>Hacker Stories</h1>
@@ -31,7 +31,7 @@ function App() {
   );
 }
 
-function Search(){
+const Search = () => {
   return (
     <div>
       <label htmlFor="search">Search: </label>
@@ -40,7 +40,7 @@ function Search(){
   )
 }
 
-function List(){
+const List = () => {
   return (
     <div>
       <ul>
@@ -62,5 +62,3 @@ function List(){
 }
 
 export default App;
-
-// page: 30
