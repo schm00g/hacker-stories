@@ -46,22 +46,24 @@ const List = (props) => {
   return (
     <div>
     <ul>
-      {props.list.map(function(item){
-        return (
-          <li key={item.objectID}>
-            <span>
-              <a href={item.url}>{item.title}</a>
-            </span>gs
-            <span>{item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-          </li>
-        );
-      })}
+      {props.list.map((item) => (
+        <Item key={item.objectID} item={item}/>
+      ))}
     </ul>
   </div>
   )
 };
+
+const Item = (props) => (
+  <li key={props.item.objectID}>
+    <span>
+      <a href={props.item.url}>{props.item.title}</a>
+    </span>gs
+    <span>{props.item.author}</span>
+    <span>{props.item.num_comments}</span>
+    <span>{props.item.points}</span>
+  </li>
+)
 
 export default App;
 
