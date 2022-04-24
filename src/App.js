@@ -2,6 +2,10 @@ import * as React from 'react';
 
 const App = () => {
 
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+  }
+
   const stories = [
     {
       title: 'React',
@@ -22,18 +26,19 @@ const App = () => {
   return (
     <div>
     <h1>Hacker Stories</h1>
-    <Search />
+    <Search onSearch={handleSearch} />
     <hr />
     <List list={stories}/>
     </div> 
   )
 };
 
-const Search = () => {
+const Search = (props) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
   const handleChange = (event) => {
-    setSearchTerm(event.target.value)
+    setSearchTerm(event.target.value);
+    props.onSearch(event);
   }
 
   return (
@@ -72,4 +77,4 @@ const Item = (props) => (
 
 export default App;
 
-// page 46
+// page 49
