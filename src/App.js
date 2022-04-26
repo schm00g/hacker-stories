@@ -18,7 +18,7 @@ const App = () => {
       objectID: 1,
     }, ];
     
-  const [searchTerm, setSearchTerm] = React.useState('Controlled Component');
+  const [searchTerm, setSearchTerm] = React.useState('');
   
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -58,21 +58,21 @@ const List = ({list}) => {
     <div>
     <ul>
       {list.map((item) => (
-        <Item key={item.objectID} item={item}/>
+        <Item key={item.objectID} {...item}/>
       ))}
     </ul>
   </div>
   )
 };
 
-const Item = ({item}) => (
-  <li key={item.objectID}>
+const Item = ({objectID, url, title, author, num_comments, points}) => (
+  <li key={objectID}>
     <span>
-      <a href={item.url}>{item.title}</a>
+      <a href={url}>{title}</a>
     </span>
-    <span>{item.author}</span>
-    <span>{item.num_comments}</span>
-    <span>{item.points}</span>
+    <span>{author}</span>
+    <span>{num_comments}</span>
+    <span>{points}</span>
   </li>
 )
 
