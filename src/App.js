@@ -18,10 +18,13 @@ const App = () => {
       objectID: 1,
     }, ];
     
-  const [searchTerm, setSearchTerm] = React.useState('');
+  const [searchTerm, setSearchTerm] = React.useState(
+    localStorage.getItem('search') || ''
+  );
   
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+    localStorage.setItem('search', event.target.value);
   }
 
   const searchedStories = stories.filter(story => 
@@ -78,4 +81,4 @@ const Item = ({item}) => (
 
 export default App;
 
-// page 58
+// page 69
