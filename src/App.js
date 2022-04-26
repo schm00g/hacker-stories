@@ -48,7 +48,7 @@ const App = () => {
       value={searchTerm}
       onInputChange={handleSearch}
     >
-        Search:
+        <strong>Search:</strong>
     </InputWithLabel>
     <p>
       Searching for <strong>{searchTerm}</strong>
