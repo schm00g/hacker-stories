@@ -1,5 +1,6 @@
 import * as React from 'react';
 import axios from 'axios';
+import './App.css';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -94,23 +95,22 @@ const App = () => {
   }
 
   return (
-    <div>
-    <h1>Hacker Stories</h1>
-    <SearchForm 
-      searchTerm={searchTerm}
-      onSearchInput={handleSearchInput}
-      onSearchSubmit={handleSearchSubmit}
-    />
-    <p>
-      Searching for <strong>{searchTerm}</strong>
-    </p>
-    <hr />
-    {stories.isError && <p>Something went wrong...</p>}
-    {stories.isLoading ? (
-      <p>Loading...</p>
-      ) : (
-        <List list={stories.data} onRemoveItem={handleRemoveStory}/>
-      )}
+    <div className="container">
+      <h1 className="headline-primary">Hacker Stories</h1>
+      <SearchForm 
+        searchTerm={searchTerm}
+        onSearchInput={handleSearchInput}
+        onSearchSubmit={handleSearchSubmit}
+      />
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
+      {stories.isError && <p>Something went wrong...</p>}
+      {stories.isLoading ? (
+        <p>Loading...</p>
+        ) : (
+          <List list={stories.data} onRemoveItem={handleRemoveStory}/>
+        )}
     </div> 
   )
 };
@@ -132,7 +132,9 @@ const InputWithLabel = ({
     }, [isFocused]);
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={id} className="label">
+        {children}
+      </label>
       &nbsp;
       <input
         ref={inputRef} 
@@ -140,6 +142,7 @@ const InputWithLabel = ({
         type={type}
         value={value}
         onChange={onInputChange}
+        className="input"
       />
     </>
   );
@@ -157,9 +160,13 @@ const SearchForm = ({
       onInputChange={onSearchInput}
       isFocused
     >
-        <strong>Search:</strong>
+        <strong>Search</strong>
     </InputWithLabel>
-    <button type="submit" disabled={!searchTerm}>
+    <button 
+      type="submit" 
+      disabled={!searchTerm}
+      className="button button_large"
+    >
       Submit
     </button>
   </form>
@@ -182,14 +189,14 @@ const List = ({list, onRemoveItem}) => {
 
 const Item = ({item, onRemoveItem}) => {
   return (
-    <li>
-      <span>
-        <a href={item.url}>{item.title}</a>
+    <li className="item">
+      <span style={{width: '50%'}}>
+        <a target="_blank" href={item.url}>{item.title}</a>
       </span>
-      <span>@{item.author}</span>
-      <span>{item.num_comments} comments</span>
-      <span>{item.points} points</span>
-      <span>
+      <span style={{width: '15%'}}>@{item.author}</span>
+      <span style={{width: '15%'}}>{item.num_comments} comments</span>
+      <span style={{width: '10%'}}>{item.points} points</span>
+      <span style={{width: '10%'}}>
         <button type="button" onClick={() => onRemoveItem(item)}>
           Remove
         </button>
@@ -200,4 +207,4 @@ const Item = ({item, onRemoveItem}) => {
 
 export default App;
 
-// page 123
+// page 142
