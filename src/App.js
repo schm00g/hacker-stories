@@ -1,6 +1,8 @@
 import * as React from 'react';
 import axios from 'axios';
+
 import './App.css';
+import { ReactComponent as Check } from './check.svg';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -166,8 +168,8 @@ const SearchForm = ({
       type="submit" 
       disabled={!searchTerm}
       className="button button_large"
-    >
-      Submit
+    > 
+      <Check height="18px" width="18px"/>
     </button>
   </form>
 );
