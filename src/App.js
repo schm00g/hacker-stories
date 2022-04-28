@@ -17,7 +17,6 @@ const useSemiPersistentState = (key, initialState) => {
     if(!isMounted.current){
       isMounted.current = true;
     } else {
-      // now his will not run on first render
       localStorage.setItem(key, value);
     }
   }, [value, key]);
@@ -87,12 +86,12 @@ const App = () => {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  const handleRemoveStory = (item) => {
+  const handleRemoveStory = React.useCallback((item) => {
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item
     });
-  }
+  }, []);
     
   const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
@@ -181,8 +180,7 @@ const SearchForm = ({
   </form>
 );
 
-const List = ({list, onRemoveItem}) => {
-  return (
+const List = React.memo(({list, onRemoveItem}) => (
     <div>
     <ul>
       {list.map((item) => (
@@ -194,7 +192,7 @@ const List = ({list, onRemoveItem}) => {
     </ul>
   </div>
   )
-};
+);
 
 const Item = ({item, onRemoveItem}) => {
   return (
@@ -216,4 +214,4 @@ const Item = ({item, onRemoveItem}) => {
 
 export default App;
 
-// page 158
+// page 164
