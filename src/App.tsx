@@ -6,25 +6,97 @@ import { ReactComponent as Check } from './check.svg';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
-const useSemiPersistentState = (key, initialState) => {
-  const isMounted = React.useRef(false);
+const useSemiPersistentState = (
+  key: string, 
+  initialState: string
+): [string, (newValue: string) => void] => {
+const isMounted = React.useRef(false);
 
-  const [value, setValue] = React.useState(
-    localStorage.getItem(key) || initialState
-  );
-  
-  React.useEffect(() => {
-    if(!isMounted.current){
-      isMounted.current = true;
-    } else {
-      localStorage.setItem(key, value);
-    }
-  }, [value, key]);
+const [value, setValue] = React.useState(
+  localStorage.getItem(key) || initialState
+);
 
-  return [value, setValue];
+React.useEffect(() => {
+  if(!isMounted.current){
+    isMounted.current = true;
+  } else {
+    localStorage.setItem(key, value);
+  }
+}, [value, key]);
+
+return [value, setValue];
 }
 
-const storiesReducer = (state, action) => {
+type Story = {
+  objectID: string;
+  url: string;
+  title: string;
+  author: string;
+  num_comments: string;
+  points: number;
+}
+
+type ItemProps = {
+  item: Story;
+  onRemoveItem: (item: Story) => void
+}
+
+type Stories = Array<Story>;
+
+type ListProps = {
+  list: Stories,
+  onRemoveItem: (item: Story) => void
+}
+
+type StoriesState = {
+  data: Stories;
+  isLoading: boolean;
+  isError: boolean;
+}
+
+interface StoriesFetchInitAction {
+  type: 'STORIES_FETCH_INIT';
+}
+
+interface StoriesFetchSuccessAction {
+  type: 'STORIES_FETCH_SUCCESS';
+  payload: Stories;
+}
+
+interface StoriesFetchFailureAction {
+  type: 'STORIES_FETCH_FAILURE';
+}
+
+interface StoriesRemoveAction {
+  type: 'REMOVE_STORY';
+  payload: Story;
+}
+
+type StoriesAction =
+  | StoriesFetchInitAction
+  | StoriesFetchSuccessAction
+  | StoriesFetchFailureAction
+  | StoriesRemoveAction;
+
+type SearchFormProps = {
+  searchTerm: string;
+  onSearchInput: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onSearchSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+} 
+
+type InputWithLabelProps = {
+  id: string; 
+  value: string; 
+  type?: string; 
+  onInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isFocused: boolean;
+  children: React.ReactNode;
+}
+
+const storiesReducer = (
+    state: StoriesState, 
+    action: StoriesAction
+  ) => {
   switch (action.type) {
     case 'STORIES_FETCH_INIT':
       return {
@@ -93,18 +165,22 @@ const App = () => {
     handleFetchStories();
   }, [handleFetchStories]);
 
-  const handleRemoveStory = React.useCallback((item) => {
+  const handleRemoveStory = React.useCallback((item: Story) => {
     dispatchStories({
       type: 'REMOVE_STORY',
       payload: item
     });
   }, []);
     
-  const handleSearchInput = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInput = (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      setSearchTerm(event.target.value);
   }
   
-  const handleSearchSubmit = (event) => {
+  const handleSearchSubmit = (
+      event: React.ChangeEvent<HTMLFormElement>
+    ) => {
     setUrl(`${API_ENDPOINT}${searchTerm}`);
     event.preventDefault();
   }
@@ -139,8 +215,8 @@ const InputWithLabel = ({
     onInputChange,
     isFocused,
     children
-  }) => {
-    const inputRef = React.useRef();
+  }: InputWithLabelProps) => {
+    const inputRef = React.useRef<HTMLInputElement>(null!);
 
     React.useEffect(() => {
       if(isFocused && inputRef.current){
@@ -169,7 +245,7 @@ const SearchForm = ({
   searchTerm,
   onSearchInput,
   onSearchSubmit
-}) => (
+}: SearchFormProps) => (
   <form onSubmit={onSearchSubmit}>
     <InputWithLabel
       id="search"
@@ -189,7 +265,7 @@ const SearchForm = ({
   </form>
 );
 
-const List = React.memo(({list, onRemoveItem}) => (
+const List = React.memo(({list, onRemoveItem}: ListProps) => (
     <div>
     <ul>
       {list.map((item) => (
@@ -203,7 +279,7 @@ const List = React.memo(({list, onRemoveItem}) => (
   )
 );
 
-const Item = ({item, onRemoveItem}) => {
+const Item = ({item, onRemoveItem}:  ItemProps) => {
   return (
     <li className="item">
       <span style={{width: '50%'}}>
@@ -223,4 +299,4 @@ const Item = ({item, onRemoveItem}) => {
 
 export default App;
 
-// page 164
+// page 177
