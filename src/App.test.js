@@ -1,5 +1,6 @@
 import * as React from 'react';
 import App, {storiesReducer, SearchForm, InputWithLabel, List, Item} from './App.tsx';
+import axios from 'axios';
 import {
   render,
   screen,
@@ -26,6 +27,8 @@ const storyTwo = {
 }
 
 const stories = [storyOne, storyTwo];
+
+jest.mock('axios');
 
 describe('something truthy and falsy', () => {
   test('true to be true', () => {
@@ -108,8 +111,6 @@ describe('Item', () => {
   test('renders all properties', () => {
     render(<Item item={storyOne}/>);
 
-    screen.debug();
-
     expect(screen.getByText('Dan Abramov')).toBeInTheDocument();
     expect(screen.getByText('Redux')).toHaveAttribute(
       'href',
@@ -167,4 +168,24 @@ describe('Search Form', () => {
 
     expect(searchFormProps.onSearchSubmit).toHaveBeenCalledTimes(1);
   });
-})
+});
+
+describe('App', () => {
+  test('succeeds fethcing data', async () => {
+    const promise = Promise.resolve({
+      data: {
+        hits: stories,
+      },
+    });
+
+    axios.get.mockImplementationOnce(() => promise);
+
+    render(<App />);
+
+    expect(screen.queryByText(/Loading/)).toBeInTheDocument();
+
+    await act(() => promise);
+
+    expect(screen.queryByText(/Loading/)).toBeNull();
+  });
+});
