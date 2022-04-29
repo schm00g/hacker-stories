@@ -48,4 +48,20 @@ describe('storiesReducer', () => {
 
     expect(newState).toStrictEqual(expectedState);
   });
+
+  test('initializes story fetch', () => {
+    const action = {type: 'STORIES_FETCH_INIT'};
+
+    const state = {data: [], isLoading: false, isError: false};
+
+    const newState = storiesReducer(state, action);
+
+    const expectedState = {
+      data: [], 
+      isLoading: true, 
+      isError: false
+    };
+
+    expect(newState).toStrictEqual(expectedState);
+  });
 });
