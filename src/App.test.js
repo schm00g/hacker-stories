@@ -159,4 +159,12 @@ describe('Search Form', () => {
 
     expect(searchFormProps.onSearchInput).toHaveBeenCalledTimes(1);
   });
+
+  test('calls onSearchSubmit on button submit clicked', () => {
+    render(<SearchForm {...searchFormProps}/>);
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(searchFormProps.onSearchSubmit).toHaveBeenCalledTimes(1);
+  });
 })

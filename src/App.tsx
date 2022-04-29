@@ -302,4 +302,4 @@ export default App;
 
 export {storiesReducer, SearchForm, InputWithLabel, List, Item};
 
-// page 185
+// page 192
