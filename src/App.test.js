@@ -79,5 +79,21 @@ describe('storiesReducer', () => {
     };
 
     expect(newState).toStrictEqual(expectedState);
+  });
+
+  test('stories fetch failure', () => {
+    const action = {type: 'STORIES_FETCH_FAILURE'};
+
+    const state = {data: [], isLoading: true, isError: false};
+
+    const newState = storiesReducer(state, action);
+
+    const expectedState = {
+      data: [], 
+      isLoading: false, 
+      isError: true
+    };
+    
+    expect(newState).toStrictEqual(expectedState);
   })
 });
