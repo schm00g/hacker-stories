@@ -9,8 +9,8 @@ import {
 
 const storyOne = {
   title: 'Redux',
-  url: '',
-  author: 'Dan Abramov, Andrew Clarke',
+  url: 'https://redux.js.org/',
+  author: 'Dan Abramov',
   num_comments: 2,
   points: 5,
   objectID: 1
@@ -18,7 +18,7 @@ const storyOne = {
 
 const storyTwo = {
   title: 'React',
-  url: '',
+  url: 'https://reactjs.org/',
   author: 'Jorge Walke',
   num_comments: 3,
   points: 3.9,
@@ -103,3 +103,32 @@ describe('storiesReducer', () => {
     expect(newState).toStrictEqual(expectedState);
   })
 });
+
+describe('Item', () => {
+  test('renders all properties', () => {
+    render(<Item item={storyOne}/>);
+
+    screen.debug();
+
+    expect(screen.getByText('Dan Abramov')).toBeInTheDocument();
+    expect(screen.getByText('Redux')).toHaveAttribute(
+      'href',
+      'https://redux.js.org/'
+    );
+  });
+
+  test('renders a clickable remove button', () => {
+    render(<Item item={storyTwo}/>);
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  test('clicking the dismiss button calls the callback handler', () => {
+    const handRemoveItem = jest.fn();
+
+    render(<Item item={storyOne} onRemoveItem={handRemoveItem}/>);
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(handRemoveItem).toHaveBeenCalledTimes(1);
+  })
+})
