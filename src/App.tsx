@@ -299,4 +299,6 @@ const Item = ({item, onRemoveItem}:  ItemProps) => {
 
 export default App;
 
-// page 177
+export {storiesReducer, SearchForm, InputWithLabel, List, Item};
+
+// page 182
