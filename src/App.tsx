@@ -99,13 +99,13 @@ const storiesReducer = (
   ) => {
   switch (action.type) {
     case 'STORIES_FETCH_INIT':
-      console.log(`INTI`, state)
       return {
         ...state,
         isLoading: true,
         isError: false
       };
-    case 'STORIES_FETCH_SUCCESS':
+      case 'STORIES_FETCH_SUCCESS':
+      console.log(`SUCC`, state)
       return {
         ...state,
         isLoading: false,
