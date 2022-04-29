@@ -187,5 +187,8 @@ describe('App', () => {
     await act(() => promise);
 
     expect(screen.queryByText(/Loading/)).toBeNull();
+    
+    expect(screen.getByText('Redux')).toBeInTheDocument();
+    expect(screen.getAllByText('Remove').length).toBe(2);
   });
 });
