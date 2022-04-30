@@ -105,7 +105,6 @@ const storiesReducer = (
         isError: false
       };
       case 'STORIES_FETCH_SUCCESS':
-      console.log(`SUCC`, state)
       return {
         ...state,
         isLoading: false,
