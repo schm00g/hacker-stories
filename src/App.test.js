@@ -168,6 +168,11 @@ describe('Search Form', () => {
 
     expect(searchFormProps.onSearchSubmit).toHaveBeenCalledTimes(1);
   });
+
+  test('renders snapshot', () => {
+    const { container } = render(<SearchForm {...searchFormProps}/>);
+    expect(container.firstChild).toMatchSnapshot();
+  });
 });
 
 describe('App', () => {
@@ -231,5 +236,72 @@ describe('App', () => {
 
     expect(screen.getAllByText('Remove').length).toBe(1);
     expect(screen.queryByText('Dan Abramov')).toBeNull();
-  })
+  });
+
+  test('searches for specific story', async () => {
+    const reactPromise = Promise.resolve({
+      data: {
+        hits: stories,
+      }
+    });
+
+    const anotherStory = {
+      title: 'Svelte',
+      url: 'https://svelte.dev/',
+      author: 'Rich Harris',
+      num_comments: 4,
+      points: 5,
+      objectID: 3
+    };
+
+    const sveltePromise = Promise.resolve({
+      data: {
+        hits: [anotherStory],
+      }
+    });
+
+    axios.get.mockImplementation((url) => {
+      if(url.includes('React')){
+        return reactPromise;
+      }
+
+      if(url.includes('Svelte')){
+        return sveltePromise;
+      }
+
+      throw Error();
+    });
+
+    // intial render
+    render(<App/>);
+
+    // first data fetch
+    await act(() => reactPromise);
+
+    expect(screen.queryByDisplayValue('React')).toBeInTheDocument();
+    expect(screen.queryByDisplayValue('Svelte')).toBeNull();
+    expect(screen.queryByText('Dan Abramov')).toBeInTheDocument();
+    expect(screen.queryByText('Jorge Walke')).toBeInTheDocument();
+    expect(screen.queryByText('Rich Harris')).toBeNull();
+
+    // User interaction - search
+    fireEvent.change(screen.queryByDisplayValue('React'), {
+      target: {
+        value: 'Svelte'
+      }
+    });
+
+    expect(screen.queryByDisplayValue('React')).toBeNull();
+    expect(screen.queryByText('Svelte')).toBeInTheDocument();
+
+    fireEvent.submit(screen.queryByText('Submit'));
+
+    // Second data fetch
+    await act(() => sveltePromise);
+
+    expect(screen.queryByText('React')).toBeNull();
+    expect(screen.queryByText('Dan Abramov')).toBeNull();
+    expect(screen.queryByText('Rich Harris')).toBeInTheDocument();
+
+  });
 });

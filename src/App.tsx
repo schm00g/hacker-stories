@@ -259,7 +259,7 @@ const SearchForm = ({
       type="submit" 
       disabled={!searchTerm}
       className="button button_large"
-    > 
+    > Submit
       <Check height="18px" width="18px"/>
     </button>
   </form>
@@ -301,4 +301,4 @@ export default App;
 
 export {storiesReducer, SearchForm, InputWithLabel, List, Item};
 
-// page 192
+// page 201
