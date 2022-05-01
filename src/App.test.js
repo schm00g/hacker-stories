@@ -209,5 +209,27 @@ describe('App', () => {
       // expect(screen.queryByText(/Loading/)).toBeNull();
       // expect(screen.queryByText(/Something went wrong/)).toBeInTheDocument();
     }
+  });
+
+  test('removes a story', async () => {
+    const promise = Promise.resolve({
+      data: {
+        hits: stories,
+      }
+    });
+
+    axios.get.mockImplementationOnce(() => promise);
+
+    render(<App/>);
+
+    await act(() => promise);
+
+    expect(screen.getAllByText('Remove').length).toBe(2);
+    expect(screen.getByText('Dan Abramov')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByText('Remove')[0]);
+
+    expect(screen.getAllByText('Remove').length).toBe(1);
+    expect(screen.queryByText('Dan Abramov')).toBeNull();
   })
 });
